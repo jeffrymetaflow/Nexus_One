@@ -13,7 +13,11 @@ def show_dashboard():
     st.title("🔧 Provisioning Dashboard")
     st.markdown("This dashboard shows the provisioning status for each submitted client.")
 
-    data = load_intake_data()
+    try:
+        data = load_intake_data()
+    except Exception as e:
+        st.error(f"Failed to load client data: {e}")
+        return
 
     if not isinstance(data, pd.DataFrame) or data.empty:
         st.warning("No client submissions found. Please fill out the intake form first.")
@@ -35,6 +39,7 @@ def show_dashboard():
                 completed_count += 1
         submitted = st.form_submit_button("✅ Save Provisioning Status")
         if submitted:
+            st.write("DEBUG: updated_status =", updated_status)
             save_provisioning_status(selected, updated_status)
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             st.success(f"Provisioning status updated successfully at {timestamp}.")
@@ -78,3 +83,4 @@ def show_dashboard():
 - Press 2 for Sales
 - Press 3 for Location & Hours
 """)
+
