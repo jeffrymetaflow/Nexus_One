@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from utils.data_loader import save_intake_data
+from email_notifier import send_notification_email
 
 def show_intake_form():
     st.title("📝 Client Intake Form")
@@ -29,5 +30,7 @@ def show_intake_form():
             "Needs": ", ".join(needs)
         }
         save_intake_data(intake_record)
+        send_notification_email(intake_record)
         st.success(f"Client '{business_name}' submitted successfully!")
         st.json(intake_record)
+
