@@ -39,7 +39,7 @@ def show_intake_form():
                     key.lower().replace(" ", "_"): value
                     for key, value in intake_record.items()
                 }
-                save_intake_data(formatted_record)
+                save_intake_data(intake_record)
                 st.success("✅ Client intake form submitted successfully.")
 
                 # Redirect to provisioning dashboard
