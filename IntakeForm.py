@@ -28,7 +28,7 @@ def show_intake_form():
                 "Number of Users": number_of_users,
                 "Domain": domain,
                 "Needs": ", ".join(needs),
-                "Submitted At": datetime.utcnow().isoformat()
+                "Submitted_At": datetime.utcnow().isoformat()
             }
 
             st.write("DEBUG: Intake record =", intake_record)
