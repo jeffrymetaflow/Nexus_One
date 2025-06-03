@@ -47,6 +47,12 @@ def show_dashboard():
         st.markdown(f"### 🟢 Completion Progress: {progress}%")
         st.progress(progress / 100)
 
+    # View-only summary snapshot
+    st.markdown("### 🔍 Provisioning Summary Snapshot")
+    for service, is_done in updated_status.items():
+        icon = "✅" if is_done else "❌"
+        st.markdown(f"- {icon} {service}")
+
     # Send Email Confirmation Button
     st.markdown("### 📧 Email Client Provisioning Summary")
     if st.button("Send Email to Client"):
