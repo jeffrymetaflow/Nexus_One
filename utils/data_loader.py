@@ -45,4 +45,4 @@ def save_provisioning_status(client_name, status_dict):
         "last_updated": datetime.utcnow().isoformat()
     }
 
-    supabase.table("intake_form_submissions").update(updates).eq("Business Name", client_name).execute()
+    supabase.table("intake_form_submissions").update(updates).eq("business_name", client_name).execute()
