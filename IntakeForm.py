@@ -34,11 +34,6 @@ def show_intake_form():
 
             st.write("DEBUG: Intake record =", intake_record)
             try:
-                # Make sure all keys match the Supabase table schema
-                formatted_record = {
-                    key.lower().replace(" ", "_"): value
-                    for key, value in intake_record.items()
-                }
                 save_intake_data(intake_record)
                 st.success("✅ Client intake form submitted successfully.")
 
@@ -48,3 +43,4 @@ def show_intake_form():
                 show_dashboard()
             except Exception as e:
                 st.error(f"❌ Failed to submit intake form: {e}")
+
