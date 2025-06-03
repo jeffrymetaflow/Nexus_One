@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 from utils.data_loader import load_intake_data, save_provisioning_status
+from utils.email_sender import send_provisioning_email
 
 # Simulated provisioning statuses
 def simulate_status(row):
@@ -35,6 +36,18 @@ def show_dashboard():
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             st.success(f"Provisioning status updated successfully at {timestamp}.")
             st.markdown(f"_Last updated: {timestamp}_")
+
+    # Send Email Confirmation Button
+    st.markdown("### 📧 Email Client Provisioning Summary")
+    if st.button("Send Email to Client"):
+        client_email = f"contact@{row['Domain']}"
+        send_provisioning_email(
+            to=client_email,
+            client=row['Business Name'],
+            contact=row['Contact Name'],
+            statuses=updated_status
+        )
+        st.success(f"Provisioning summary sent to {client_email}.")
 
     st.markdown("---")
     st.markdown("**Sample Email Signature:**")
