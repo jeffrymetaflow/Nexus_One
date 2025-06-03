@@ -4,7 +4,7 @@ from utils.data_loader import save_intake_data
 from ProvisioningDashboard import show_dashboard
 
 def show_intake_form():
-    st.title("📝 Client Intake Form")
+    st.title("📜 Client Intake Form")
     st.markdown("Please fill out the following information to begin onboarding.")
 
     with st.form("intake_form"):
@@ -34,7 +34,12 @@ def show_intake_form():
 
             st.write("DEBUG: Intake record =", intake_record)
             try:
-                save_intake_data(intake_record)
+                # Make sure all keys match the Supabase table schema
+                formatted_record = {
+                    key.lower().replace(" ", "_"): value
+                    for key, value in intake_record.items()
+                }
+                save_intake_data(formatted_record)
                 st.success("✅ Client intake form submitted successfully.")
 
                 # Redirect to provisioning dashboard
@@ -43,4 +48,3 @@ def show_intake_form():
                 show_dashboard()
             except Exception as e:
                 st.error(f"❌ Failed to submit intake form: {e}")
-
