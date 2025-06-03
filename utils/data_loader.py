@@ -1,25 +1,34 @@
-import pandas as pd
 import os
+from supabase import create_client, Client
 from datetime import datetime
 
-DATA_FILE = "intake_submissions.csv"
+# Load Supabase credentials from Streamlit secrets
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 def save_intake_data(record):
-    # Add timestamp to record
-    record["Submitted At"] = datetime.now().isoformat()
+    # Add timestamp
+    record["submitted_at"] = datetime.now().isoformat()
 
-    # Check if file exists
-    if os.path.exists(DATA_FILE):
-        df = pd.read_csv(DATA_FILE)
-        df = pd.concat([df, pd.DataFrame([record])], ignore_index=True)
-    else:
-        df = pd.DataFrame([record])
+    # Rename keys to match table schema
+    formatted_record = {
+        "business_name": record["Business Name"],
+        "contact_name": record["Contact Name"],
+        "email": record["Email"],
+        "phone": record.get("Phone", ""),
+        "industry": record.get("Industry", ""),
+        "number_of_users": record.get("Number of Users", 0),
+        "domain": record.get("Domain", ""),
+        "needs": record.get("Needs", ""),
+        "submitted_at": record["submitted_at"]
+    }
 
-    df.to_csv(DATA_FILE, index=False)
-
+    data, count = supabase.table("intake_form_submissions").insert(formatted_record).execute()
+    return data
 
 def load_intake_data():
-    if os.path.exists(DATA_FILE):
-        return pd.read_csv(DATA_FILE)
-    else:
-        return pd.DataFrame()
+    response = supabase.table("intake_form_submissions").select("*").order("submitted_at", desc=True).execute()
+    return response.data
+
