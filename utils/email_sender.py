@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 from utils.data_loader import load_intake_data, save_provisioning_status
-from utils.email_sender import send_provisioning_email
+
 
 # Simulated provisioning statuses
 def simulate_status(row):
