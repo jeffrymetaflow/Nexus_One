@@ -20,7 +20,7 @@ def show_dashboard():
 
     data = load_intake_data()
 
-    if data is None or data.empty:
+    if not isinstance(data, pd.DataFrame) or data.empty:
         st.warning("No client submissions found. Please fill out the intake form first.")
         return
 
@@ -43,7 +43,7 @@ def show_dashboard():
 
     st.markdown("**IVR Call Flow (Sample):")
     st.markdown("""
-    - Press 1 for Service
-    - Press 2 for Sales
-    - Press 3 for Location & Hours
-    """)
+- Press 1 for Service
+- Press 2 for Sales
+- Press 3 for Location & Hours
+""")
