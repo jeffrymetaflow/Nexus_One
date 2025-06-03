@@ -27,15 +27,25 @@ def show_dashboard():
     st.write(f"**Domain:** {row['Domain']}  |  **Industry:** {row['Industry']}  |  **Users:** {row['Number of Users']}")
 
     updated_status = {}
+    completed_count = 0
     with st.form("provisioning_form"):
         for service in statuses:
             updated_status[service] = st.checkbox(f"{service}", value=statuses[service])
+            if updated_status[service]:
+                completed_count += 1
         submitted = st.form_submit_button("✅ Save Provisioning Status")
         if submitted:
             save_provisioning_status(selected, updated_status)
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             st.success(f"Provisioning status updated successfully at {timestamp}.")
             st.markdown(f"_Last updated: {timestamp}_")
+
+    # Visual indicator of completion progress
+    total_services = len(updated_status)
+    if total_services > 0:
+        progress = int((completed_count / total_services) * 100)
+        st.markdown(f"### 🟢 Completion Progress: {progress}%")
+        st.progress(progress / 100)
 
     # Send Email Confirmation Button
     st.markdown("### 📧 Email Client Provisioning Summary")
