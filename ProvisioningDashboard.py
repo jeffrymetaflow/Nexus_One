@@ -41,5 +41,9 @@ def show_dashboard():
     st.markdown("**CRM Pipeline Preview:**")
     st.markdown("- Lead In → Qualification → Proposal → Closed Won/Lost")
 
-    st.markdown("**IVR Call Flow (Sample):**")
-    st.markdown(\"\"\"\n    - Press 1 for Service\n    - Press 2 for Sales\n    - Press 3 for Location & Hours\n    \"\"\")
+    st.markdown("**IVR Call Flow (Sample):")
+    st.markdown("""
+    - Press 1 for Service
+    - Press 2 for Sales
+    - Press 3 for Location & Hours
+    """)
