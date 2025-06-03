@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
-from utils.data_loader import load_intake_data
+from datetime import datetime
+from utils.data_loader import load_intake_data, save_provisioning_status
 
 # Simulated provisioning statuses
 def simulate_status(row):
@@ -31,7 +32,9 @@ def show_dashboard():
         submitted = st.form_submit_button("✅ Save Provisioning Status")
         if submitted:
             save_provisioning_status(selected, updated_status)
-            st.success("Provisioning status updated successfully.")
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            st.success(f"Provisioning status updated successfully at {timestamp}.")
+            st.markdown(f"_Last updated: {timestamp}_")
 
     st.markdown("---")
     st.markdown("**Sample Email Signature:**")
