@@ -1,6 +1,7 @@
 import streamlit as st
 from datetime import datetime
 from utils.data_loader import save_intake_data
+from ProvisioningDashboard import show_dashboard
 
 def show_intake_form():
     st.title("📝 Client Intake Form")
@@ -20,18 +21,23 @@ def show_intake_form():
 
         if submitted:
             intake_record = {
-                "Business Name": business_name,
-                "Contact Name": contact_name,
-                "Email": email,
-                "Phone": phone,
-                "Industry": industry,
-                "Number of Users": number_of_users,
-                "Domain": domain,
-                "Needs": ", ".join(needs),
-                "Submitted_At": datetime.utcnow().isoformat()
+                "business_name": business_name,
+                "contact_name": contact_name,
+                "email": email,
+                "phone": phone,
+                "industry": industry,
+                "number_of_users": number_of_users,
+                "domain": domain,
+                "needs": ", ".join(needs),
+                "submitted_at": datetime.utcnow().isoformat()
             }
 
             st.write("DEBUG: Intake record =", intake_record)
             save_intake_data(intake_record)
             st.success("✅ Client intake form submitted successfully.")
+
+            # Redirect to provisioning dashboard
+            st.markdown("---")
+            st.markdown("### Redirecting to Provisioning Dashboard...")
+            show_dashboard()
 
