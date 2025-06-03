@@ -14,7 +14,7 @@ def save_intake_data(record):
 
     # Rename keys to match table schema
     formatted_record = {
-        "business_name": record["Business Name"],
+        "business_name": record["business name"],
         "contact_name": record["Contact Name"],
         "email": record["Email"],
         "phone": record.get("Phone", ""),
