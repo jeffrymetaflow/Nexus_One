@@ -8,7 +8,7 @@ def show_intake_form():
     st.markdown("Please fill out the following information to begin onboarding.")
 
     with st.form("intake_form"):
-        business_name = st.text_input("Business Name")
+        business_name = st.text_input("business name")
         contact_name = st.text_input("Contact Name")
         email = st.text_input("Email")
         phone = st.text_input("Phone")
