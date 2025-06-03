@@ -62,3 +62,33 @@ def show_dashboard():
 - Press 2 for Sales
 - Press 3 for Location & Hours
 """)
+
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+
+def send_provisioning_email(to, client, contact, statuses):
+    status_html = "".join(
+        f"<li><strong>{service}:</strong> {'✅ Completed' if done else '❌ Pending'}</li>"
+        for service, done in statuses.items()
+    )
+
+    html_content = f"""
+    <p>Hello {contact},</p>
+    <p>Here is the current provisioning summary for your business <strong>{client}</strong>:</p>
+    <ul>{status_html}</ul>
+    <p>Thank you,<br/>Nexus One Support Team</p>
+    """
+
+    message = Mail(
+        from_email="noreply@nexusonetechnologies.com",
+        to_emails=to,
+        subject=f"Provisioning Summary for {client}",
+        html_content=html_content
+    )
+
+    try:
+        sg = SendGridAPIClient(os.getenv("SENDGRID_API_KEY"))
+        response = sg.send(message)
+        print(f"Email sent to {to}. Status code: {response.status_code}")
+    except Exception as e:
+        print(f"Failed to send email: {e}")
