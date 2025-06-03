@@ -5,14 +5,7 @@ from utils.data_loader import load_intake_data
 # Simulated provisioning statuses
 def simulate_status(row):
     services = row.get("Needs", "").split(", ")
-    provision_map = {
-        "Email": "✅ Configured",
-        "VoIP": "✅ Extension Created",
-        "CRM": "✅ Pipeline Set",
-        "Security": "✅ Agent Deployed",
-        "File Sharing": "✅ Folder Shared"
-    }
-    return {service: provision_map.get(service, "❌ Not Available") for service in services}
+    return {service: False for service in services}  # Default unchecked
 
 def show_dashboard():
     st.title("🔧 Provisioning Dashboard")
@@ -28,11 +21,17 @@ def show_dashboard():
     row = data[data["Business Name"] == selected].iloc[0]
     statuses = simulate_status(row)
 
-    st.subheader(f"Provisioning Summary for {selected}")
+    st.subheader(f"Provisioning Tracker for {selected}")
     st.write(f"**Domain:** {row['Domain']}  |  **Industry:** {row['Industry']}  |  **Users:** {row['Number of Users']}")
 
-    status_df = pd.DataFrame(list(statuses.items()), columns=["Service", "Status"])
-    st.table(status_df)
+    updated_status = {}
+    with st.form("provisioning_form"):
+        for service in statuses:
+            updated_status[service] = st.checkbox(f"{service}", value=statuses[service])
+        submitted = st.form_submit_button("✅ Save Provisioning Status")
+        if submitted:
+            save_provisioning_status(selected, updated_status)
+            st.success("Provisioning status updated successfully.")
 
     st.markdown("---")
     st.markdown("**Sample Email Signature:**")
