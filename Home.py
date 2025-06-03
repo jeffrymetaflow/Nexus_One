@@ -1,5 +1,7 @@
 import streamlit as st
 
+st.image("assets/nexus_one_logo.png", width=200)
+
 def show_home():
     st.title("🚀 Nexus One MVP Demo")
     st.markdown("""
