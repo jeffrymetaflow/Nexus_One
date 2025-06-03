@@ -1,10 +1,23 @@
 import os
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+from supabase import create_client
+import datetime
 
 SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
 EMAIL_FROM = os.getenv("EMAIL_FROM")
 EMAIL_TO = os.getenv("EMAIL_TO")
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+
+def log_email_event(email_type, recipient, subject):
+    supabase.table("email_logs").insert({
+        "timestamp": datetime.datetime.utcnow().isoformat(),
+        "type": email_type,
+        "recipient": recipient,
+        "subject": subject
+    }).execute()
 
 def send_notification_email(record):
     subject = f"New Nexus One Client Intake: {record['Business Name']}"
@@ -31,6 +44,7 @@ def send_notification_email(record):
     try:
         sg = SendGridAPIClient(SENDGRID_API_KEY)
         response = sg.send(message)
+        log_email_event("notification", EMAIL_TO, subject)
         return response.status_code
     except Exception as e:
         print(f"Error sending email: {e}")
@@ -58,8 +72,8 @@ def send_thank_you_email(record):
     try:
         sg = SendGridAPIClient(SENDGRID_API_KEY)
         response = sg.send(message)
+        log_email_event("thank_you", record['Email'], subject)
         return response.status_code
     except Exception as e:
         print(f"Error sending thank you email: {e}")
         return None
-
