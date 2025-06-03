@@ -32,3 +32,17 @@ def load_intake_data():
     response = supabase.table("intake_form_submissions").select("*").order("submitted_at", desc=True).execute()
     return response.data
 
+def save_provisioning_status(client_name, status_dict):
+    from supabase import create_client
+    import os
+
+    url = os.getenv("SUPABASE_URL")
+    key = os.getenv("SUPABASE_KEY")
+    supabase = create_client(url, key)
+
+    updates = {
+        "provisioning_status": status_dict,
+        "last_updated": datetime.utcnow().isoformat()
+    }
+
+    supabase.table("intake_form_submissions").update(updates).eq("Business Name", client_name).execute()
