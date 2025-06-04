@@ -2,7 +2,6 @@ import os
 from supabase import create_client, Client
 from datetime import datetime
 import streamlit as st
-from streamlit_extras.switch_page_button import switch_page
 
 # Load Supabase credentials from Streamlit secrets
 SUPABASE_URL = os.getenv("SUPABASE_URL")
@@ -66,7 +65,8 @@ def show_intake_form():
             try:
                 save_intake_data(intake_record)
                 st.success("✅ Client intake form submitted successfully.")
-                switch_page("Provisioning Dashboard")
+                st.session_state["navigate_to_dashboard"] = True
+                st.rerun()
             except Exception as e:
                 st.error(f"❌ Failed to submit intake form: {e}")
 
