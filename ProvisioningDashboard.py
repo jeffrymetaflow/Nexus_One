@@ -23,8 +23,8 @@ def show_dashboard():
         st.warning("No client submissions found. Please fill out the intake form first.")
         return
 
-    selected = st.selectbox("Select a client:", options=data["Business Name"])
-    row = data[data["Business Name"] == selected].iloc[0]
+    selected = st.selectbox("Select a client:", options=[d["business_name"] for d in data])
+    row = next((r for r in data if r["business_name"] == selected), None)
     statuses = simulate_status(row)
 
     st.subheader(f"Provisioning Tracker for {selected}")
