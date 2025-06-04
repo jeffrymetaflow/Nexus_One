@@ -37,10 +37,4 @@ def show_intake_form():
                 save_intake_data(intake_record)
                 st.success("✅ Client intake form submitted successfully.")
 
-                # Redirect to provisioning dashboard
-                st.markdown("---")
-                st.markdown("### Redirecting to Provisioning Dashboard...")
-                show_dashboard()
-            except Exception as e:
-                st.error(f"❌ Failed to submit intake form: {e}")
-
+           
