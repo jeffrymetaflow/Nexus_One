@@ -7,21 +7,26 @@ from TrainingPortal import show_training_resources
 from SupportTicket import show_support_ticket_form
 from SupportTicketDashboard import show_support_dashboard
 
-
 # --- Streamlit App Configuration ---
 st.set_page_config(page_title="Nexus One MVP", layout="wide")
 
-# --- Main Navigation ---
+# --- Sidebar Header ---
 st.sidebar.title("📡 Nexus One MVP")
-selection = st.sidebar.radio("Navigate", [
-    "Home",
-    "Client Intake",
-    "Provisioning Dashboard",
-    "Training & Resources",
-    "Support Escalation",
-    "Submit Support Ticket",
-    "Support Ticket Dashboard"
-])
+
+# --- Redirect logic ---
+if st.session_state.get("redirect_to_dashboard"):
+    st.session_state["redirect_to_dashboard"] = False  # Reset flag
+    selection = "Provisioning Dashboard"
+else:
+    selection = st.sidebar.radio("Navigate", [
+        "Home",
+        "Client Intake",
+        "Provisioning Dashboard",
+        "Training & Resources",
+        "Support Escalation",
+        "Submit Support Ticket",
+        "Support Ticket Dashboard"
+    ])
 
 # --- Page Routing ---
 if selection == "Home":
