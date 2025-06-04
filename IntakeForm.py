@@ -2,7 +2,6 @@ import os
 from supabase import create_client, Client
 from datetime import datetime
 import streamlit as st
-from streamlit.runtime.scriptrunner import rerun
 
 # Load Supabase credentials from Streamlit secrets
 SUPABASE_URL = os.getenv("SUPABASE_URL")
@@ -23,7 +22,7 @@ def save_intake_data(record):
 
     # Set redirect flag and rerun app to dashboard
     st.session_state["redirect_to_dashboard"] = True
-    rerun()
+    st.experimental_rerun()
 
     return data
 
@@ -73,3 +72,4 @@ def show_intake_form():
                 st.success("✅ Client intake form submitted successfully.")
             except Exception as e:
                 st.error(f"❌ Failed to submit intake form: {e}")
+
