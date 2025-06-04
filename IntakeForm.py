@@ -22,7 +22,7 @@ def save_intake_data(record):
 
     # Set redirect flag and rerun app to dashboard
     st.session_state["redirect_to_dashboard"] = True
-    st.experimental_rerun()
+    st.rerun()
 
     return data
 
@@ -72,4 +72,5 @@ def show_intake_form():
                 st.success("✅ Client intake form submitted successfully.")
             except Exception as e:
                 st.error(f"❌ Failed to submit intake form: {e}")
+
 
